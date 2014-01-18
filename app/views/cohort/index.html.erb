@@ -1,0 +1,35 @@
+<form action="/">
+  Weeks: <input type="text" name="limit" value="<%= @limit %>" />
+  <input type="submit" value="Load" />
+</form>
+
+
+<table border="1" cellpadding="10" cellspacing="0">
+<tr>
+  <th>Cohort</th>
+  <th>Users</th>
+  <% @intervals.each do |interval| -%>
+  <th><%= interval * 7 %>-<%= interval * 7 + 7 %> Days</th>
+  <% end %>
+</tr>
+<% @user_counts_by_week.each do |week, users_count| %>
+<tr>
+  <td><%= Date.commercial(2013, week + 1, 1).strftime("%m/%d") %> - <%= Date.commercial(2013, week + 1, 7).strftime("%m/%d") %></td>
+  <td><%= users_count %></td>
+  <%- @intervals.each do |interval| %>
+    <td>
+      <% if @purchasers_by_week_with_intervals[week].has_key? interval %>
+        <% orders_count = @purchasers_by_week_with_intervals[week][interval] %>
+        <%= number_to_percentage(orders_count.to_f / users_count.to_f * 100, precision: 1) %> orderers (<%= orders_count %>)
+      <% end %><br />
+
+      <% if @firsts_with_intervals[week].has_key? interval %>
+        <% orders_count = @firsts_with_intervals[week][interval] %>
+        <%= number_to_percentage(orders_count.to_f / users_count.to_f * 100, precision: 1) %> 1st time (<%= orders_count %>)
+      <% end %>
+    </td>
+  <% end -%>
+  
+</tr>
+<% end %>
+</table>
