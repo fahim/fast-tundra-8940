@@ -34,5 +34,5 @@ gem 'jquery-rails'
 # To use debugger
 # gem 'debugger'
 
-gem 'pg'
 gem 'mysql2'
+gem 'heroku'
